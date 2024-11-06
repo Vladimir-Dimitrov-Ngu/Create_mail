@@ -13,7 +13,6 @@ domain = random.choice(domain_list)
 def generate_username():
     name = string.ascii_lowercase + string.digits
     username = "".join(random.choice(name) for i in range(10))
-
     return username
 
 
@@ -22,14 +21,14 @@ def check_mail(mail=""):
     r = requests.get(req_link).json()
     length = len(r)
     if length == 0:
-        print("[INFO] пока писем нет")
+        print("[INFO] No new emails yet")
     else:
         id_list = []
         for i in r:
             for k, v in i.items():
                 if k == "id":
                     id_list.append(v)
-        print(f"[INFO] у вас {length} писем")
+        print(f"[INFO] You have {length} new email(s)")
         current_dir = os.getcwd()
         final_dir = os.path.join(current_dir, "all_mails")
         if not os.path.exists(final_dir):
@@ -58,14 +57,14 @@ def delete_mail(mail=""):
         "domain": mail.split("@")[1],
     }
     r = requests.post(url, data=data)
-    print(f"[INFO] Почтовый адрес {mail} - удален")
+    print(f"[INFO] Email address {mail} - deleted")
 
 
 def main():
     username = generate_username()
     mail = f"{username}@{domain}"
     try:
-        print(f"[+] Ваш почтовый адреc: {mail}")
+        print(f"[+] Your email address: {mail}")
         _ = requests.get(
             f'{API}?login={mail.split("@")[0]}&domain={mail.split("@")[1]}'
         )
@@ -74,7 +73,7 @@ def main():
             time.sleep(2.5)
     except KeyboardInterrupt:
         delete_mail(mail=mail)
-        print("Программа прервана")
+        print("Program interrupted")
 
 
 if __name__ == "__main__":
