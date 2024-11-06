@@ -1,8 +1,9 @@
-import requests
+import os
 import random
 import string
 import time
-import os
+
+import requests
 
 API = "https://www.1secmail.com/api/v1/"
 domain_list = ["1secmail.com", "1secmail.org", "1secmail.net"]
@@ -61,11 +62,11 @@ def delete_mail(mail=""):
 
 
 def main():
+    username = generate_username()
+    mail = f"{username}@{domain}"
     try:
-        username = generate_username()
-        mail = f"{username}@{domain}"
         print(f"[+] Ваш почтовый адреc: {mail}")
-        mail_req = requests.get(
+        _ = requests.get(
             f'{API}?login={mail.split("@")[0]}&domain={mail.split("@")[1]}'
         )
         while True:
